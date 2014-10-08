@@ -1,0 +1,12 @@
+<ul class="nav nav-list">
+{{#each files}}
+    <li class="{{#if isActive}}active{{/if}}">
+        {{#if isFolder}}
+            <i class="icon-chevron-right"></i>
+        {{/if}}
+        <a href="#">
+            {{fileName}}
+        </a>
+    </li>
+{{/each}}
+</ul>

@@ -1,0 +1,155 @@
+<!doctype html>
+<html manifest="/PlaceOrder.manifest">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<title> Place/Save a new order </title>
+		<script type="text/javascript" src="helper.js">
+		</script>
+	</head>
+	<body style="background-image:url(http://25.media.tumblr.com/tumblr_mch8nxanFM1rirnzso1_400.jpg);">
+	<form>
+	<aside style="float:right">		
+			<img src="http://tctechcrunch2011.files.wordpress.com/2013/02/108.png?w=300" height=100px width=120px/>
+	</aside>
+	<hgroup style="text-align:center;padding-top:10px">
+		<h1> Place / Save a new order </h1>
+	</hgroup>
+		<section style="padding-top:10px;">
+		<table style="border:1px solid" align="center">
+			<tr>
+				<td colspan="2">
+					<span id="lblError" style="color:red"></span>
+				</td>
+			</tr>	
+			<tr>
+				<td rowspan="6">
+					<figure>
+						<img src="http://sport5shoesunlimited.files.wordpress.com/2013/02/reebok-shoes26.jpg"
+							width="75%" height="75%" align="center" style="border:2px double" />
+					</figure>
+				</td>
+			</tr>
+			<tr>
+				<td style="valign:top" rowspan="1">
+					Your Name: <br/><input type="text" id="txtName">
+				</td>
+			</tr>
+			<tr>
+				<td style="valign:top" rowspan="1">
+					Your Email Address: <br/><input type="email" id="txtEmail">
+				</td>
+			</tr>
+			<tr>
+				<td style="valign:top" rowspan="1">
+					Your Website: <br/><input type="url" id="txtWebsite">
+				</td>
+			</tr>
+			<tr>
+				<td style="valign:top" rowspan="1">
+					Your Phone Number: <br/><input type="tel" id="txtPhone">
+				</td>
+			</tr>
+			<tr colspan="1">
+				<td style="valign:top" rowspan="1">
+					Requested Delivery Date: <br/><input type="date" id="txtDate">
+				</td>
+			</tr>
+			<tr>
+				<td style="valign:top" rowspan="1" colspan="2">
+					Shipping Address: <br/><textarea rows="4" cols="55" id="txtAddress"></textarea>
+				</td>
+			</tr>
+			<tr>
+				<td style="valign:top" rowspan="1" colspan="2">
+					Quantity: <input type="text" id="txtQuantity" onchange="ComputeQuantity()" onkeypress="return CheckKeyCode(event)"/> * <span id="txtMuliplier">1.49 </span> = <span id="txtComputedQuantity">1.49 </span>
+				</td>
+			</tr>
+			<tr>
+				<td style="valign:top;padding-top:20px" rowspan="1" colspan="2">
+					<input type="button" value="Place Order" style="background-color:#c00; color:#fff;" onclick="PlaceOrder()"/>
+					<input type="button" value="Save Order" style="background-color:#c00; color:#fff;" onclick="SaveOrder()"/>
+					<input type="button" value="Reset All Order" style="background-color:#c00; color:#fff;" onclick="RemoveAllOrders()"/>
+				</td>
+			</tr>
+		</table>
+		<div id="results"></div>
+		</section>
+		</form>
+		</body>
+		<script>
+			var createStatement = 'CREATE TABLE IF NOT EXISTS Orders (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, email TEXT, website TEXT, phone TEXT, deliverydate TEXT,address TEXT, quantity TEXT)';
+			var db = window.openDatabase('OrderDB', '1.0', 'Order Data', 200000);
+			var dataset;
+			var results = document.getElementById('results'); 
+			
+	function onError(tx, error) {
+			debugger;
+			alert(error.message);
+			}
+
+
+function showRecords() {
+		debugger;
+        var selectAllStatement = "SELECT * FROM Orders";
+		
+        db.transaction(function(tx) {
+          tx.executeSql(selectAllStatement, [], function(tx, result) {
+		  debugger;
+			dataset = result.rows;
+            for (var i = 0, item = null; i < dataset.length; i++) {
+              item = dataset.item(i);
+              results.innerHTML += 
+              '<li>' + item['name'] + ' , ' + item['email'] + '</li>';
+			}
+          });
+        });
+      }
+	  
+function SaveOrder()
+{
+	debugger;
+	if(validateFields())
+	{
+		db.transaction(function(tx) {
+          tx.executeSql(createStatement, [], showRecords, onError);
+        });
+		insertRecord();
+		//showRecords();
+	}
+}
+
+function insertRecord() {
+		debugger;
+		var txtName = document.getElementById("txtName");
+		var txtEmail = document.getElementById("txtEmail");
+		var txtWebsite = document.getElementById("txtWebsite");
+		var txtPhone = document.getElementById("txtPhone");
+		var txtDate = document.getElementById("txtDate");
+		var txtAddress = document.getElementById("txtAddress");
+		var txtQuantity = document.getElementById("txtQuantity");
+		//save the order in sql lite
+		var insertStatement = "INSERT INTO Orders (name, email, website,phone, deliverydate, address, quantity) VALUES (?, ?, ?, ?, ?, ?, ?)";
+        db.transaction(function(tx) {
+          tx.executeSql(insertStatement, [txtName.value, txtEmail.value, txtWebsite.value, txtPhone.value, txtDate.value, txtAddress.value, txtQuantity.value], loadAndReset, onError);
+        });
+      }
+
+function loadAndReset(){
+	debugger;
+	showRecords();
+ }
+ 
+ function dropTable() {
+ var dropStatement = "DROP TABLE Orders";
+        db.transaction(function(tx) {
+          tx.executeSql(dropStatement, [], showRecords, onError);
+        });
+      }
+	  
+function RemoveAllOrders()
+	  {
+		dropTable();
+	  }
+
+		</script>
+</html>

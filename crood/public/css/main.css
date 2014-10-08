@@ -1,0 +1,107 @@
+body {
+    overflow: hidden;
+    background-color: #FDF6E3;
+}
+
+#editor {
+    margin: 0;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+}
+
+div.visible {
+    opacity: 1;
+}
+
+body input.folder-input {
+    width: 186px;
+    font-size: 11px;
+}
+
+.file-list-action-button {
+    height: 22px;
+    width: 22px;
+    border-radius: 11px;
+    border: 1px solid;
+    padding: 0;
+    position: absolute;
+    margin: 1px;
+    left: -30px;
+    opacity: 0.6;
+    -webkit-transition: opacity 0.2s ease;
+}
+.file-list-action-button i {
+    margin-left: 2px;
+}
+
+.file-list .new-file-button {
+    top: 44px;
+}
+.file-list .new-file-button.centered {
+    left: 50%;
+    margin-left: -10px;
+}
+
+.file-list .folder-up-button {
+    top: 4px;
+}
+
+.file-list-action-button:hover {
+    opacity: 1;
+}
+
+.file-list {
+    z-index: 10;
+    position: absolute;
+    top: 7px;
+    right: 22px;
+    opacity: 0.3;
+    -webkit-transition: opacity 0.2s ease;
+    -webkit-transform: translate3d(0, 0, 0);
+    -webkit-transform-origin: top;
+}
+.file-list:hover {
+    opacity: 1;
+}
+
+.file-list .nav-list {
+    box-shadow: 0 1px 4px rgba(0,0,0,.065);
+    background-color: white;
+    padding: 0;
+    border-radius: 6px;
+    width: 200px;
+    overflow-x: hidden;
+}
+.file-list .nav-list li:first-child a {
+    border-radius: 6px 6px 0 0;
+}
+.file-list .nav-list li:last-child a {
+    border-radius: 0 0 6px 6px;
+    border-top: 0;
+}
+.file-list .nav-list li {
+    line-height: 15px;
+}
+.file-list .nav-list li a {
+    border: 1px solid #e5e5e5;
+    margin: 0;
+    padding: 8px 14px;
+    font-size: 11px;
+    -webkit-transition: background-color 0.2s ease;
+}
+.file-list .nav-list .active .icon-chevron-right {
+    background-image: url(lib/bootstrap/img/glyphicons-halflings-white.png);
+    opacity: 1;
+}
+.file-list .nav-list li .icon-chevron-right {
+    float: right;
+    margin-top: 9px;
+    margin-right: 7px;
+    opacity: 0.5;
+    cursor: pointer;
+}
+
+
